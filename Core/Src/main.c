@@ -133,6 +133,9 @@ int main(void)
 				case 0x01:
 					Light_Set(100);
 					break;
+				case 0x02:
+					
+					break;
 			}
 		}
 		else if(command[2] == 0x02)

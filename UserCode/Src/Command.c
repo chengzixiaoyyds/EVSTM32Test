@@ -93,7 +93,7 @@ uint8_t Command_GetCommand(uint8_t *command) {
         }
         // 如果不是包头 则跳过 重新开始寻找
         if (Command_Read(readIndex) != 0x5A || Command_Read(readIndex + 1) != 0xA5) {
-        Command_AddReadIndex(2);
+        Command_AddReadIndex(1);
         continue;
         }
         // 如果缓冲区长度小于指令长度 则不可能有完整的指令
