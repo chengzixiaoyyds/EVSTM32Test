@@ -51,6 +51,7 @@
 uint8_t readBuffer[100];
 uint8_t command[20];
 uint8_t sendBuffer[20];
+uint8_t pinState = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -129,12 +130,24 @@ int main(void)
 			{
 				case 0x00:
 					Light_Set(0);
+					pinState = 0;
 					break;
 				case 0x01:
 					Light_Set(100);
+					pinState = 1;
 					break;
 				case 0x02:
-					
+					switch(pinState)
+					{
+						case 0:
+							Light_Set(100);
+							pinState = 1;
+							break;
+						case 1:
+							Light_Set(0);
+							pinState = 0;
+							break;
+					}
 					break;
 			}
 		}
@@ -143,6 +156,7 @@ int main(void)
 			float light1;
 			memcpy(&light1, command + 3, sizeof(float));
 			uint8_t light = light1 * 100;
+			pinState = light < 50 ? 0 : 1;
 			Light_Set(light);
 		}
     /* USER CODE END WHILE */
