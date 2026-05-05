@@ -123,41 +123,43 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		Command_GetCommand(command);
-		if(command[2] == 0x01)
+		if(Command_GetCommand(command) != 0)
 		{
-			switch(command[3])
+			if(command[2] == 0x01)
 			{
-				case 0x00:
-					Light_Set(0);
-					pinState = 0;
-					break;
-				case 0x01:
-					Light_Set(100);
-					pinState = 1;
-					break;
-				case 0x02:
-					switch(pinState)
-					{
-						case 0:
-							Light_Set(100);
-							pinState = 1;
-							break;
-						case 1:
-							Light_Set(0);
-							pinState = 0;
-							break;
-					}
-					break;
+				switch(command[3])
+				{
+					case 0x00:
+						Light_Set(0);
+						pinState = 0;
+						break;
+					case 0x01:
+						Light_Set(100);
+						pinState = 1;
+						break;
+					case 0x02:
+						switch(pinState)
+						{
+							case 0:
+								Light_Set(100);
+								pinState = 1;
+								break;
+							case 1:
+								Light_Set(0);
+								pinState = 0;
+								break;
+						}
+						break;
+				}
 			}
-		}
-		else if(command[2] == 0x02)
-		{
-			float light1;
-			memcpy(&light1, command + 3, sizeof(float));
-			uint8_t light = light1 * 100;
-			pinState = light < 50 ? 0 : 1;
-			Light_Set(light);
+			else if(command[2] == 0x02)
+			{
+				float light1;
+				memcpy(&light1, command + 3, sizeof(float));
+				uint8_t light = light1 * 100;
+				pinState = light < 50 ? 0 : 1;
+				Light_Set(light);
+			}
 		}
     /* USER CODE END WHILE */
 
