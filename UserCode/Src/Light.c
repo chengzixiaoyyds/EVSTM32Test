@@ -7,9 +7,9 @@ void Light_Init(void)
 
 void Light_Set(uint8_t light)
 {
-	if(light > 99)
+	if(light > 100)
 	{
-		light = 99;
+		light = 100;
 	}
 	if(light < 0)
 	{

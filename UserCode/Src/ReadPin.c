@@ -1,5 +1,5 @@
 #include "ReadPin.h"
-#define COMMAND_LENGH 6
+#define COMMAND_LENGH 4
 
 uint8_t ReadPin(uint8_t * command , GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin)
 {
@@ -8,10 +8,10 @@ uint8_t ReadPin(uint8_t * command , GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin)
 	command[1] = 0xa5;
 	command[2] = state;
 	uint8_t sum = 0;
-	for(uint8_t i = 0; i < 5; i++)
+	for(uint8_t i = 0; i < COMMAND_LENGH - 1; i++)
 	{
 		sum += command[i];
 	}
-	command[5] = sum;
+	command[COMMAND_LENGH - 1] = sum;
 	return COMMAND_LENGH;
 }

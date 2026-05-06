@@ -67,12 +67,12 @@ uint8_t Command_GetRemain()
 uint8_t Command_Write(uint8_t *data, uint8_t length)
 {
 	// 如果缓冲区不足 则不写入数据 返回0
-	if (Command_GetRemain() < length)
+	if(Command_GetRemain() < length)
 	{
 		return 0;
 	}
 	// 使用memcpy函数将数据写入缓冲区
-	if (writeIndex + length < BUFFER_SIZE)
+	if(writeIndex + length < BUFFER_SIZE)
 	{
 		memcpy(buffer + writeIndex, data, length);
 		writeIndex += length;
@@ -99,12 +99,12 @@ uint8_t Command_GetCommand(uint8_t *command)
 	while (1)
 	{
 		// 如果缓冲区长度小于COMMAND_MIN_LENGTH 则不可能有完整的指令
-		if (Command_GetLength() < COMMAND_MIN_LENGTH)
+		if(Command_GetLength() < COMMAND_MIN_LENGTH)
 		{
 			return 0;
 		}
 		// 如果不是包头 则跳过 重新开始寻找
-		if (Command_Read(readIndex) != 0x5A || Command_Read(readIndex + 1) != 0xA5)
+		if(Command_Read(readIndex) != 0x5A || Command_Read(readIndex + 1) != 0xA5)
 		{
 			Command_AddReadIndex(1);
 			continue;
@@ -119,23 +119,23 @@ uint8_t Command_GetCommand(uint8_t *command)
 		{
 			length = 8;
 		}
-		if (Command_GetLength() < length)
+		if(Command_GetLength() < length)
 		{
 			return 0;
 		}
 		// 如果校验和不正确 则跳过 重新开始寻找
 		uint8_t sum = 0;
-		for (uint8_t i = 0; i < length - 1; i++)
+		for(uint8_t i = 0; i < length - 1; i++)
 		{
 			sum += Command_Read(readIndex + i);
 		}
-		if (sum != Command_Read(readIndex + length - 1))
+		if(sum != Command_Read(readIndex + length - 1))
 		{
 			Command_AddReadIndex(1);
 			continue;
 		}
 		// 如果找到完整指令 则将指令写入command 返回指令长度
-		for (uint8_t i = 0; i < length; i++)
+		for(uint8_t i = 0; i < length; i++)
 		{
 			command[i] = Command_Read(readIndex + i);
 		}
